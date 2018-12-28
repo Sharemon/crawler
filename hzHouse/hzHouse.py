@@ -176,7 +176,7 @@ def main():
                         item['price unit'] = priceUnit
                         save(csvFile, item)
             except Exception as e:
-                exceptionListFile.write(str(e))
+                exceptionListFile.write(str(e) + district + "   " + location + '\n')
                 continue
 
     csvFile.close()
