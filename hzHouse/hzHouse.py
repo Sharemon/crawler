@@ -33,6 +33,8 @@ headers = {
 
 urlHeader = 'https://hz.lianjia.com/ershoufang'
 csvFilename = 'ershoufang.csv'
+ignoreList =['桐庐', '淳安', '建德'] 
+
 itemKeys = [
     'title'     ,
     'location'  ,
@@ -60,7 +62,7 @@ def save(csvFile, item):
     #print(item)
 
     for itemKeyIndex in range(len(itemKeys)):
-        csvFile.write(item[itemKeys[itemKeyIndex]] + ',')
+        csvFile.write(item[itemKeys[itemKeyIndex]].replace(',', ' ') + ',')
     csvFile.write('\n')
 
 
@@ -102,7 +104,7 @@ def main():
     # get locations in each districts
     for district in districts:
         # don't wanna leave too far away
-        if (district in ['桐庐', '淳安', '建德']):
+        if (district in ignoreList):
             continue
 
         locationMemory[district] = []
@@ -139,9 +141,9 @@ def main():
                 pageSoup = gethtml(urlLocation)
                 maxPage = int(pageSoup.find('div', 'page-box fr').div['page-data'].split(',')[0].split(':')[1])
                 # if maxPag > 50, there may be some problems
-                if (maxPage > 50):
-                    exceptionListFile.write(district + "   " + location + '   ' + 'page error' + '\n')
-                    continue
+                # if (maxPage > 50):
+                #    exceptionListFile.write(district + "   " + location + '   ' + 'page error' + '\n')
+                #    continue
     
                 # iterate to get house list on each page
                 for page in range(maxPage):
